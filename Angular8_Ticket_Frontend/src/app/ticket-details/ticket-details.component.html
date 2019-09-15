@@ -1,0 +1,26 @@
+<h2>Ticket Details</h2> 
+
+<hr/>
+<div *ngIf="ticket">
+  <div>
+    <label><b>Number: </b></label> {{ticket.id}}
+  </div>
+  <div>
+    <label><b>Activity Name: </b></label> {{ticket.activityName}}
+  </div>
+  <div>
+    <label><b>Price: </b></label> {{ticket.price}}
+  </div>
+    <div>
+    <label><b>Buyer: </b></label> {{ticket.buyer}}
+  </div>
+    <div>
+    <label><b>Purchase Date: </b></label> {{ticket.purDate}}
+  </div>
+</div>
+
+<br>
+<br>
+<button (click)="list()" class="btn btn-primary">Back to Ticket List</button><br>
+
+

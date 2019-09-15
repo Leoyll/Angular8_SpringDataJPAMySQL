@@ -1,0 +1,33 @@
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h2>Ticket List</h2>
+  </div>
+  <div class="panel-body">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Number</th>
+          <th>Activity Name</th>
+          <th>Price</th>
+          <th>Buyer</th>
+          <th>Purchase Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ticket of tickets | async">
+          <td>{{ticket.id}}</td>
+          <td>{{ticket.activityName}}</td>
+          <td>{{ticket.price}}</td>
+          <td>{{ticket.buyer}}</td>
+          <td>{{ticket.purDate}}</td>
+          <td><button (click)="deleteTicket(ticket.id)" class="btn btn-danger">Delete</button>
+              <button (click)="ticketDetails(ticket.id)" class="btn btn-info" style="margin-left: 10px">Details</button>
+              <button (click)="updateTicket(ticket.id)" class="btn btn-info" style="margin-left: 10px">Update</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
