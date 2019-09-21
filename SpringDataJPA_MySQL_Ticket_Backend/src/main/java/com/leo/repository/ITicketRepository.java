@@ -1,4 +1,4 @@
-package com.leo.DAO;
+package com.leo.repository;
 
 import java.util.List;
 
