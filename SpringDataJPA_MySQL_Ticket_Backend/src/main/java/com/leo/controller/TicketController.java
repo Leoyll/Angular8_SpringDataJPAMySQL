@@ -66,7 +66,7 @@ public class TicketController {
 
 		ticket.setActivityName(ticketDetails.getActivityName());
 		ticket.setBuyer(ticketDetails.getBuyer());
-//		ticket.setId(ticketDetails.getId());
+//		ticket.setId(ticketDetails.getId());	//don't need update
 		ticket.setPrice(ticketDetails.getPrice());
 		ticket.setPurDate(ticketDetails.getPurDate());
         final Ticket updatedTicket = ticketService.save(ticket);
