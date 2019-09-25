@@ -1,12 +1,8 @@
 package com.leo.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import javax.annotation.Resource;
 import javax.validation.Valid;
-
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
-
 import com.leo.entity.Ticket;
 import com.leo.service.TicketService;
 
@@ -53,8 +48,9 @@ public class TicketController {
 	 */
 	@GetMapping("/tickets/{id}")
     public ResponseEntity<Ticket> getTicketById(@PathVariable(value = "id") Long id) {
-		Ticket ticket = ticketService.findById(id);
-        return ResponseEntity.ok().body(ticket);
+		return ticketService.findById(id)
+				.map(record->ResponseEntity.ok().body(record))
+				.orElse(ResponseEntity.notFound().build());
     }	
 	
 	/*
@@ -62,26 +58,27 @@ public class TicketController {
 	 */
 	@PutMapping("/tickets/{id}")
     public ResponseEntity<Ticket> updateTicket(@PathVariable(value = "id") Long number, @Valid @RequestBody Ticket ticketDetails) {
-		Ticket ticket = ticketService.findById(number);
-
-		ticket.setActivityName(ticketDetails.getActivityName());
-		ticket.setBuyer(ticketDetails.getBuyer());
-//		ticket.setId(ticketDetails.getId());
-		ticket.setPrice(ticketDetails.getPrice());
-		ticket.setPurDate(ticketDetails.getPurDate());
-        final Ticket updatedTicket = ticketService.save(ticket);
-        return ResponseEntity.ok(updatedTicket);
+		return ticketService.findById(number)
+				.map(record->{
+					record.setActivityName(ticketDetails.getActivityName());
+					record.setBuyer(ticketDetails.getBuyer());
+					record.setPrice(ticketDetails.getPrice());
+					record.setPurDate(ticketDetails.getPurDate());
+					Ticket updatedTicket = ticketService.save(record);
+					return ResponseEntity.ok().body(updatedTicket);
+				}).orElse(ResponseEntity.notFound().build());
     }
     
 	/*
 	 * Ticket with a certain Number is deleted.
 	 */
 	@DeleteMapping("/tickets/{id}")
-    public Map<String, Boolean> deleteTicket(@PathVariable(value = "id") Long number){
-		ticketService.delete(number);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return response;
+    public ResponseEntity<?> deleteTicket(@PathVariable(value = "id") Long number){
+		return ticketService.findById(number)
+				.map(record->{
+					ticketService.delete(number);
+					return ResponseEntity.ok().build();
+				}).orElse(ResponseEntity.notFound().build());
     }
 
 }
